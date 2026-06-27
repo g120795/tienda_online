@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Form Create Product{% endblock %}
+
+{% block content %}
+    <h1 class="font-bold">Create Product</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <ul>
+                 <div class="bg-white text-blue-900 p-2">
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300"><p class="font-bold">nombre_producto:{{form.product_name}}</p></li>
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300"><p class="font-bold">modelo_producto:{{form.product_model}}</p></li>
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300"><p class="font-bold">precio_producto:{{form.product_price}}</p></li>
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300"><p class="font-bold">stock_actual:{{form.product_current_stock}}</p></li>
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300"><p class="font-bold">stock_minimo:{{form.product_min_stock}}</p></li>
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300"><p class="font-bold">categoria:{{form.category}}</p></li>
+                    <button type="submit" class="bg-gray-100 p-4 rounded shadow border border-gray-700 hover:bg-gray-500 hover:text-violet-300">Guardar</button>
+                </div>
+            </ul>
+        </form>
+    
+{% endblock %}

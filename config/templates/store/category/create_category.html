@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Crear Categoria{% endblock %}
+
+{% block content %}
+    <h1 class="font-bold">Crear Categoria</h1>
+        <form method="POST">
+            {% csrf_token %}
+            <ul>
+                 <div class="bg-white text-blue-900 p-2">
+                    <li class="bg-gray p-2 ml-2 rounded shadow border border-gray-900 hover:bg-gray-300">
+                        <p class="font-bold">nombre_categoria:{{form.category_name}}</p>
+                    </li>
+                    <button type="submit" class="bg-gray-100 p-4 rounded shadow border border-gray-700 hover:bg-gray-500 hover:text-violet-300">Guardar</button>
+                </div>
+            </ul>
+        </form>
+{% endblock %}

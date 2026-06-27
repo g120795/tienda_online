@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <ul>
+        <div>
+            <li>
+                <a href="{% url 'product' %}">
+                    Producto
+
+                </a>
+                <a href="{% url 'category' %}">
+                    Categoria
+
+                </a>
+                <a href="{% url 'order' %}">
+                    Pedido
+
+                </a>
+            </li>
+        </div>
+    </ul>
+{% endblock %}

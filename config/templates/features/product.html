@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Product{% endblock %}
+{% block content %}
+    <ul>
+        <div>      
+                <li>
+                    <a href="{% url 'create_product' %}">
+                        Crear Producto
+                    </a>
+            
+                </li>
+        </div>
+    </ul>
+{% endblock %}
+

@@ -1,0 +1,29 @@
+<html>
+<header>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>{%block title%}App{% endblock %}</title>
+</header>
+
+<body>
+    <nav>
+        <div class="flex gap-6">
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'features' %}">Features</a></li>
+                <li><a href="{% url 'about_us' %}">About_Us</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main>
+        {% block content %}
+
+        {% endblock %}
+    </main>
+</body>
+<footer class="bg-gray-800 text-white p-4 mt-8 text-center">
+    <p class="font-bold">
+        E-comerce 2026
+    </p>
+</footer>
+</html>
