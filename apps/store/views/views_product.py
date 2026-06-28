@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from ..form import ProductForm
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def create_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)

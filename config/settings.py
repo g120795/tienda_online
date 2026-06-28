@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k!bw!6o4%1c+64df(r(h^57gk_7v#4249&%d(e&bl7i!(gzr37'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG','False').lower() == 'true'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [host.strip() for host in os.getenv('ALLOWED_HOSTS').split(',')]
 
 
 # Application definition
@@ -40,9 +40,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
 
-    'store'
-]
+    'apps.store.apps.StoreConfig',
+    'apps.users.apps.UsersConfig',
+    
+]   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -60,6 +63,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
+            BASE_DIR/'templates',
+            BASE_DIR/'templates/registration',
             BASE_DIR/'config/templates',
             BASE_DIR/'config/templates/home',
             BASE_DIR/'config/templates/features',
@@ -67,7 +72,7 @@ TEMPLATES = [
             BASE_DIR/'config/templates/store/category',
             BASE_DIR/'config/templates/store/order',
             BASE_DIR/'config/templates/store/order_item',
-            BASE_DIR/'config/templates/store/user',
+            
             
         ],
         'APP_DIRS': True,
@@ -135,3 +140,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'login'
