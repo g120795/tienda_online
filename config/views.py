@@ -21,6 +21,9 @@ def category(request):
 def order(request):
     return render(request, 'order.html')
 
+def catalog_link(request):
+    return render(request, 'catalog_link.html')
+
 
 
 

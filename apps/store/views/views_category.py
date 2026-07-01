@@ -1,15 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from ..form import CategoryForm
 from django.contrib.auth.decorators import login_required
 
 @login_required
 def create_category(request):
     if request.method == 'POST':
-        print('entrando al primer if')
         form = CategoryForm(request.POST)
         if form.is_valid():
-            print('entrando al segundo if')
             form.save()
+            return redirect('catalog_link')
     else:
         form = CategoryForm
     context = {

@@ -2,11 +2,11 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Home Page</h1>
+    <h1 class="p-4">Home Page</h1>
     
     <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
-            <button type="submit">
+            <button type="submit" class="ml-4">
                 Logout
             </button>
     </form>

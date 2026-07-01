@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from .views import home, features, about_us, contact, product, category, order
+from .views import home, features, about_us, contact, product, category, order, catalog_link
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',home, name='home'),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('home/features/product', product, name='product'),
     path('home/features/category', category, name='category'),
     path('home/features/order', order, name='order'),
+    path('home/features/catalog_link', catalog_link, name='catalog_link'),
     path('app/store/', include('apps.store.urls'),name='store'),
     path('app/users/', include('apps.users.urls'),name='users'),
     path('accounts/', include('django.contrib.auth.urls')),

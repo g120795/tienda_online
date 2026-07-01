@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Catalogo{% endblock %}
+
+{% block content %}
+    <h1 class="p-4">Catalogo de Productos</h1>
+        <ul>
+             <div class="bg-white p-4 rounded shadow border border-shadow-900">
+                {% for product in productos %}
+                <li class="list-group-item">Nombre: {{product.product_name}}</li>
+                <li class>Model: {{product.product_model}}</li>
+                <li class>Precio: {{product.product_price}}</li>
+                <li class>Stock: {{product.product_current_stock}}</li>
+                <li class>Categoria: {{product.category}}</li>
+                <button type="submit">Comprar</button>
+                <button type="submit">Agregar al carrito</button>
+                {% endfor %}
+            </div>
+        </ul>
+    
+{% endblock %}
