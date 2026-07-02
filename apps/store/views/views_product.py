@@ -25,3 +25,11 @@ def catalog(request):
         'productos': productos
     }
     return render(request, 'catalog.html', context)
+
+@login_required
+def detail_product(request, product_id):
+    producto = Product.objects.get(id=product_id)
+    context = {
+        'producto': producto
+    }
+    return render(request, 'detail_product.html', context)

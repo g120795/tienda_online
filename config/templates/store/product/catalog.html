@@ -6,13 +6,13 @@
         <ul>
              <div class="bg-white p-4 rounded shadow border border-shadow-900">
                 {% for product in productos %}
-                <li class="list-group-item">Nombre: {{product.product_name}}</li>
-                <li class>Model: {{product.product_model}}</li>
-                <li class>Precio: {{product.product_price}}</li>
-                <li class>Stock: {{product.product_current_stock}}</li>
-                <li class>Categoria: {{product.category}}</li>
-                <button type="submit">Comprar</button>
-                <button type="submit">Agregar al carrito</button>
+                    <li class="list-group-item">Nombre: {{product.product_name}}</li>
+                    <li>Model: {{product.product_model}}</li>
+                    <li>
+                        <a href="{% url 'detail_product' product.id %}">
+                            Detalles
+                        </a>
+                    </li>
                 {% endfor %}
             </div>
         </ul>

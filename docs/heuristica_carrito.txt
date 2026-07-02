@@ -1,5 +1,5 @@
-====================================================
-HEURÍSTICA PARA MODELADO DE BACKEND
+===================================================
+HEURÍSTICA PARA MODELADO DEL CARRITO
 ====================================================
 
 ANTES DE CREAR UN MODELO
@@ -7,6 +7,12 @@ ANTES DE CREAR UN MODELO
 1. ¿Qué representa?
 
     Describe el objeto del mundo real.
+    
+    CARRITO DE COMPRAS: Un carrito es una utilidad que nos permite cargar varios objetos al mismo tiempo
+    caracteristicas:
+    tiene ruedas
+    su cuerpo es una canasta grande en donde caven varios productos
+    tiene un chasis de metal, y en la parte trasera tiene una especio de timon
 
     Ejemplo:
         Product representa un artículo que la tienda vende.
@@ -17,8 +23,12 @@ ANTES DE CREAR UN MODELO
 2. ¿Por qué existe?
 
     ¿Qué problema resuelve?
+        almacena varios productos y permite la compra de una lista al mismo tiempo
+
 
     ¿Cuál es su propósito dentro del sistema?
+        Facilitar la compra de varios productos al mismo tiempo
+
 
 
 ----------------------------------------------------
@@ -26,7 +36,7 @@ ANTES DE CREAR UN MODELO
 3. ¿Quién lo crea?
 
     Usuario
-    Sistema
+    Sistema: este lo crea, por que siempre esta disponible para ser llenado
     Administrador
     API externa
     Proceso automático
@@ -36,7 +46,7 @@ ANTES DE CREAR UN MODELO
 
 4. ¿Cuándo deja de existir?
 
-    Nunca
+    Nunca:nunca
     Se elimina
     Se archiva
     Solo cambia de estado
@@ -49,10 +59,15 @@ ANTES DE CREAR UN MODELO
     Identificar relaciones.
 
     OneToOne
-    OneToMany
+    OneToMany: se relaciona con orderitem un carrito puede contener muchos orderitem
     ManyToMany
 
     Dibujar las cardinalidades.
+
+    carrito
+    1
+    N
+    orderitem
 
 
 ----------------------------------------------------
@@ -60,6 +75,11 @@ ANTES DE CREAR UN MODELO
 6. ¿Qué datos le pertenecen realmente?
 
     Solo colocar información propia.
+
+    id pk
+    cuadrito_de_seleccionado
+    cantidad:cuantas unidades quiere el cliente
+    boton_de_eliminar
 
     Evitar duplicar información.
 
@@ -69,6 +89,9 @@ ANTES DE CREAR UN MODELO
 7. ¿Qué datos obtiene mediante relaciones?
 
     Pensar qué datos provienen de otros modelos.
+        nombre de producto
+        stock
+        precio
 
     Evitar guardar información innecesaria.
 
@@ -82,7 +105,8 @@ ANTES DE CREAR UN MODELO
     - Un pedido debe tener al menos un producto.
     - Un stock no puede ser negativo.
     - Un usuario solo puede cancelar pedidos pendientes.
-
+    - solo un administrador puede añadir actualizar y eliminar productos
+    - Ningun administrador puede eliminar una order
 
 ----------------------------------------------------
 
@@ -104,12 +128,12 @@ ANTES DE CREAR UN MODELO
     Antes de crear una tabla preguntarme:
 
     ¿Existe realmente?
-
+        si porque tiene caracteristicas propias como una canaste con ruedas que puede contener muchos productos
+        pero en el mundo digital puede ser solo una lista y tengo esta duda. 
     ¿Tiene identidad propia?
-
+        si por que es una canaste con opciones 
     ¿Tiene ciclo de vida?
-
+        no, por que siempre esta ahi
     ¿O puede obtenerse mediante una consulta?
-
-
-====================================================
+      un usuario necesita un numero de carro por que si no se podria confunfir con el de otro usuario.
+      
