@@ -8,5 +8,5 @@ class OrderForm(forms.ModelForm):
                     'order_num', 
                     'order_date', 
                     'order_total', 
-                    'user'
+                    'profile'
                   ]

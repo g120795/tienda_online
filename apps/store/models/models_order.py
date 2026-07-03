@@ -1,5 +1,5 @@
 from django.db import models
-from users.models import Profile
+from apps.users.models import Profile
 
 class Order(models.Model):
     order_num = models.PositiveIntegerField()

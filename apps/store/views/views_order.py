@@ -14,3 +14,4 @@ def create_order(request):
         'form':form
     }
     return render(request, 'create_order.html', context)
+
