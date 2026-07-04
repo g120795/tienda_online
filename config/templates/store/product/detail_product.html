@@ -7,24 +7,24 @@
         <div class="block bg-white p-4 rounded shadow border border-shadow-900 hover:bg-gray-200">
             <li class="list-group-item">Model: {{producto.product_model}}</li>
             <li class="list-group-item">Precio: {{producto.product_price}}</li>
-            <li class="list-group-item">Categoria: {{producto.category}}</li>
-            <a ><button type="submit">Comprar</button></a>
-            <a ><button type="submit">Agregar al carrito</button></a>
-            <form method="post">
+            <li class="list-group-item">Categoria: {{producto.category}}</li>   
+            <form method="post" action="{% url 'cart' producto.id %}">
                 {% csrf_token %}
-                <p>
-                    Cantidad: {% if form.quantity > stock_disponible %}
-                        <p>Sin stock</p>
-                    {% else %}
-                    {{form.quantity}}
-                    {% endif %}
-                    {{stock_disponible}} disponible
-                </p>
+
+                <input type="hidden" name="product_id" value="{{producto.id}}">
+                <p>Cantidad: {{ form.quantity }}   (Stock disponible: {{ producto.product_current_stock }})</p>
+                <input type="hidden" name="quantity" value="{{ form.quantity.value|default_if_none:1 }}">
+                <button type="submit">Agregar al Carrito</button>
             </form>
         </div>
     </ul>
+
     
 
 
 
 {% endblock %}
+
+
+
+

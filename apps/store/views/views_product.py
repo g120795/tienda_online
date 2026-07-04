@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from ..form import ProductForm, OrderItemForm
 from django.contrib.auth.decorators import login_required
 from ..models.models_product import Product
+from apps.users.models import Profile
 
 @login_required
 def create_product(request):
@@ -28,6 +29,7 @@ def catalog(request):
 
 @login_required
 def detail_product(request, product_id):
+    print(request)
     stock_disponible = 0
     producto = Product.objects.get(id=product_id)
     stock_disponible = f'{producto.product_current_stock - producto.product_min_stock:.0f}'
@@ -37,4 +39,6 @@ def detail_product(request, product_id):
         'stock_disponible': stock_disponible,
         'form': form,
     }
+    print(context)
+
     return render(request, 'detail_product.html', context)

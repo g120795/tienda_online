@@ -4,7 +4,7 @@ from .views import create_category
 from .views import create_order
 from .views import catalog
 from .views import detail_product
-#from .views import add_to_cart
+from .views import add_to_cart
 urlpatterns = [
     #product
     path('create_product/', create_product, name='create_product'),
@@ -15,6 +15,6 @@ urlpatterns = [
 
     #order
     path('create_order/', create_order, name='create_order'),
-    #path('add_to_cart', add_to_cart, name='add_to_cart'),
+    path('<int:product_id>/compra', add_to_cart, name='cart'),
 
 ]
