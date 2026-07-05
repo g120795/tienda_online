@@ -15,6 +15,6 @@ urlpatterns = [
 
     #order
     path('create_order/', create_order, name='create_order'),
-    path('<int:product_id>/compra', add_to_cart, name='cart'),
+    path('<int:product_id>/compra', add_to_cart, name='add_to_cart'),
 
 ]

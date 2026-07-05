@@ -37,12 +37,13 @@ def create_order_item(request):
 @login_required
 def add_to_cart(request, product_id):
     
+    a=f'cantidad: {request.POST.get('quantity',1)}'
+    print(a)
     # product
     producto = Product.objects.get(id=product_id)
     order = Order.objects.filter(profile_id__user_id=request.user.id).first()
-    if order:
-        print(order.id)
     #order and orderitem save
+    # si la orden existe el if devuelve false y pasa al else
     if not order:
         formorder = OrderForm({'status': 'CART', 'order_total': float(request.POST.get('quantity', 1))*producto.product_price, 'profile': Profile.objects.get(user_id=request.user.id)})
         if formorder.is_valid():
@@ -57,16 +58,41 @@ def add_to_cart(request, product_id):
                 return render(request, 'add_to_cart.html', {'text': 'Producto agregado al carrito'} )
     else:
         order = Order.objects.filter(profile_id__user_id=request.user.id).first()
-        print(order.id)
-        order_item = OrderItem.objects.filter(product_id=product_id)          
-        if not order_item.exists():
-            formorderitem = OrderItemForm({'name_product': producto.product_name,
-                                       'quantity': float(request.POST.get('quantity', 1)),
-                                        'price_unit': producto.product_price,'subtotal': float(request.POST.get('quantity', 1))*producto.product_price, 'order': order.id, 'product': producto.id})    
-            if formorderitem.is_valid():
-                print('formorderitem is valid')
-                formorderitem.save()        
-                return render(request, 'add_to_cart.html', {'text': 'Producto agregado al carrito'} )
+        order_item = OrderItem.objects.get(product_id=product_id)          
+        print(f'id: {order_item.id}')
+        print(order_item.quantity)
+        cantidad=request.POST.get('quantity')
+        print(f'cantidad: {cantidad}')
+        if order_item:
+            print('entrando al primer if')
+            cantidad=request.POST.get('quantity')
+            if order_item.quantity == cantidad:
+                print('segundo if')
+                return render(request, 'add_to_cart.html', {'text': 'El producto ya se encuentra en el carrito'} )  
+            elif order_item.quantity != cantidad:
+                print('elif')
+                formitem = OrderItemForm({  'name_product': order_item.name_product,
+                                            'quantity': float(request.POST.get('quantity')),
+                                            'price_unit': order_item.price_unit,
+                                            'subtotal': int(request.POST.get('quantity'))*float(order_item.price_unit), 
+                                            'order': order.id, 
+                                            'product': producto.id}, instance=order_item)
+                print(formitem.errors)
+                if formitem.is_valid():
+                    formitem.save()
+                    print('guardando')
+                    return render(request, 'add_to_cart.html', {'text': 'El producto ya se encuentra en el carrito'} )  
+                return redirect('detail_product', product_id)
+        else:    
+            if not order_item.exists():
+                print('tercer if')
+                formorderitem = OrderItemForm({'name_product': producto.product_name,
+                                           'quantity': float(request.POST.get('quantity', 1)),
+                                            'price_unit': producto.product_price,'subtotal': float(request.POST.get('quantity', 1))*producto.product_price, 'order': order.id, 'product': producto.id})    
+                if formorderitem.is_valid():
+                    print('formorderitem is valid')
+                    formorderitem.save()        
+                    return render(request, 'add_to_cart.html', {'text': 'Producto agregado al carrito'} )
         return render(request, 'add_to_cart.html', {'text': 'El producto ya se encuentra en el carrito'} )  
             
 #status=status_choices

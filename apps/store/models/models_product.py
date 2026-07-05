@@ -11,3 +11,5 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     
     
+    
+  

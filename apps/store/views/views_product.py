@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from ..form import ProductForm, OrderItemForm
 from django.contrib.auth.decorators import login_required
 from ..models.models_product import Product
-from apps.users.models import Profile
 
 @login_required
 def create_product(request):
