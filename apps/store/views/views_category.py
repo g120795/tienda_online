@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def create_category(request):
+    if not request.user.is_staff:
+        return redirect('home')
+    
     if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():

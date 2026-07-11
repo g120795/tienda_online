@@ -4,15 +4,20 @@ from ..models.models_order_item import OrderItem
 from ..models.models_order import Order
 from apps.users.models import Profile
 from ..form import OrderForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from ..form import OrderItemForm
-
+from .views_product import update_stock
 
 @login_required
 def create_order(request):
+    if not request.user.is_staff:
+        return redirect('home')
+    
     if request.method == 'POST':
         form = OrderForm(request.POST)
+        print(form)
         if form.is_valid():
+            
             form.save()
     else:
         form = OrderForm()
@@ -23,6 +28,9 @@ def create_order(request):
 
 
 def create_order_item(request):
+    if not request.user.is_staff:
+        return redirect('home')
+    
     if request.method == 'POST':
         form = OrderItemForm(request.POST)
         if form.is_valid():
@@ -36,83 +44,137 @@ def create_order_item(request):
 
 @login_required
 def add_to_cart(request, product_id):
-    
-    a=f'cantidad: {request.POST.get('quantity',1)}'
-    print(a)
+    perfil = Profile.objects.get(user_id=request.user.id)
+
     # product
     producto = Product.objects.get(id=product_id)
-    order = Order.objects.filter(profile_id__user_id=request.user.id).first()
+    order = Order.objects.filter(profile_id__user_id=request.user.id, status='CART').first()
+
+    cantidad = int(request.POST.get('quantity'))
+    print(cantidad)
+    if cantidad < 1 or cantidad > (producto.product_current_stock-producto.product_min_stock):
+        return redirect('detail_product',product_id)
     #order and orderitem save
     # si la orden existe el if devuelve false y pasa al else
     if not order:
-        formorder = OrderForm({'status': 'CART', 'order_total': float(request.POST.get('quantity', 1))*producto.product_price, 'profile': Profile.objects.get(user_id=request.user.id)})
+        print('creando order')
+        formorder = OrderForm({'status': 'CART',
+                               'profile': perfil.id})
+        print(formorder.errors)
         if formorder.is_valid():
-            print('formorder is valid')
+            print('validad form')
             formorder.save()
+            print('saved_form')
             formorderitem = OrderItemForm({'name_product': producto.product_name,
-                                   'quantity': float(request.POST.get('quantity', 1)),
-                                    'price_unit': producto.product_price,'subtotal': float(request.POST.get('quantity', 1))*producto.product_price, 'order': formorder.instance.id, 'product': producto.id})    
+                                    'quantity': float(request.POST.get('quantity')),
+                                    'price_unit': producto.product_price,
+                                    'subtotal': float(request.POST.get('quantity', 1))*producto.product_price,
+                                    'order': formorder.instance.id, 
+                                    'product': producto.id})    
             if formorderitem.is_valid():
-                print('formorderitem is valid')
                 formorderitem.save()        
                 return render(request, 'add_to_cart.html', {'text': 'Producto agregado al carrito'} )
+        else:
+            return redirect('detail_product',product_id)    
     else:
-        order = Order.objects.filter(profile_id__user_id=request.user.id).first()
-        order_item = OrderItem.objects.get(product_id=product_id)          
-        print(f'id: {order_item.id}')
-        print(order_item.quantity)
-        cantidad=request.POST.get('quantity')
-        print(f'cantidad: {cantidad}')
+        order_item = OrderItem.objects.filter(product_id=product_id).first()
         if order_item:
-            print('entrando al primer if')
             cantidad=request.POST.get('quantity')
             if order_item.quantity == cantidad:
-                print('segundo if')
                 return render(request, 'add_to_cart.html', {'text': 'El producto ya se encuentra en el carrito'} )  
             elif order_item.quantity != cantidad:
-                print('elif')
                 formitem = OrderItemForm({  'name_product': order_item.name_product,
                                             'quantity': float(request.POST.get('quantity')),
                                             'price_unit': order_item.price_unit,
                                             'subtotal': int(request.POST.get('quantity'))*float(order_item.price_unit), 
                                             'order': order.id, 
                                             'product': producto.id}, instance=order_item)
-                print(formitem.errors)
                 if formitem.is_valid():
                     formitem.save()
-                    print('guardando')
                     return render(request, 'add_to_cart.html', {'text': 'El producto ya se encuentra en el carrito'} )  
                 return redirect('detail_product', product_id)
         else:    
-            if not order_item.exists():
                 print('tercer if')
-                formorderitem = OrderItemForm({'name_product': producto.product_name,
-                                           'quantity': float(request.POST.get('quantity', 1)),
-                                            'price_unit': producto.product_price,'subtotal': float(request.POST.get('quantity', 1))*producto.product_price, 'order': order.id, 'product': producto.id})    
+                formorderitem = OrderItemForm({ 'name_product': producto.product_name,
+                                                'quantity': float(request.POST.get('quantity', 1)),
+                                                'price_unit': producto.product_price,
+                                                'subtotal': float(request.POST.get('quantity', 1))*producto.product_price, 
+                                                'order': order.id, 
+                                                'product': producto.id})    
+                
                 if formorderitem.is_valid():
-                    print('formorderitem is valid')
                     formorderitem.save()        
                     return render(request, 'add_to_cart.html', {'text': 'Producto agregado al carrito'} )
         return render(request, 'add_to_cart.html', {'text': 'El producto ya se encuentra en el carrito'} )  
-            
-#status=status_choices
-#created_at=fecha
-#order_total=unit_price*quantity
-#profile=users_profile
-#
-#product
-#product_name
-#product_model 
-#product_price 
-#product_current_stock 
-#product_min_stock 
-#category 
-#
-#orderitem
-#
-#name_product=product_name 
-#quantity =cantidad que elige el usuario
-#price_unit=product_price
-#subtotal=quantity * price_unit
-#order 
-#product 
+
+@login_required
+def cart(request):
+    order = Order.objects.filter(profile_id__user_id=request.user.id,status='CART').first()
+    print(order)
+    if not order:
+        return render(request, 'cart.html',{'order':'carrito vacio'})    
+    orderitem = OrderItem.objects.filter(order_id=order.id)
+    total = 0 
+    for i in orderitem:
+        if i.subtotal:
+            total+=i.subtotal
+    context = {
+        'orderitem':orderitem,
+        'total': total
+    }
+    return render(request, 'cart.html', context)
+
+@login_required
+def pay_method(request):
+    order = Order.objects.filter(profile_id__user_id=request.user.id,status='CART').first()
+    if request.method == 'POST':
+        print(f'post: {request.user}')
+        form = OrderForm({
+                            'profile':order.profile_id,
+                            'status':order.status,
+                            'payment_method':request.POST.get('payment_method')},
+                            instance=order)
+        if form.is_valid():
+            form.save()
+            return redirect('payment')
+
+    else:
+        form = OrderForm()
+    context={
+        'form':form,
+    }
+    return render(request, 'pay_method.html', context)
+
+@login_required
+def payment(request):
+    order = Order.objects.filter(profile_id__user_id=request.user.id, status='CART').first()
+    print(order)
+    order_item =OrderItem.objects.filter(order_id=order.id)
+    total = 0
+    for subtotal in order_item:
+        if subtotal.subtotal:
+            total += subtotal.subtotal
+    print(total)
+    if request.method=='POST':
+        order_form = OrderForm({'order_total':total,
+                                'profile':order.profile_id,
+                                'status':'PAID',
+                                'payment_method':order.payment_method},
+                                instance=order)
+        print(order_form.errors)
+        if order_form.is_valid():
+            print('form creado con exito')
+            order_form.save()
+            update_stock(request, order_item)
+            print('redirigiendo')
+            return redirect('catalog')
+        else:
+            print('no se pudo guardar redirigiendo a pay_method')
+            return redirect('pay_method')
+    context = {
+        'order':order,
+        'order_item':order_item
+     }
+    return render(request, 'payment.html',context)
+
+

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Metodo de pago{% endblock %}
+
+{% block content %}
+<form method="POST" >
+    {% csrf_token %}
+    <p class="font-bold">metodo_de_pago: {{form.payment_method}}</p>
+    <button>continuar</button>
+</form>
+
+{% endblock %}

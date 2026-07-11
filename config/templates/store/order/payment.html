@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Pagar{% endblock %}
+{% block content %}
+    {{order}}
+        <ul>
+            {% for ord in order_item %}
+                <li class="content-gray-200 p-2 rounded shadow order order-gray-900 hover:bg-gray-200 font-bold">
+                    Nombre: {{ord.name_product}}<br>
+                    Cantidad: {{ord.quantity}}<br>
+                    Precio und: {{ord.price_unit}}<br>
+                    Subtotal: {{ord.subtotal}}
+                <li><br>
+            {% endfor %}
+        </ul>
+    <form method="POST">
+        {% csrf_token %}
+        <button>Confirmar compra</button>
+    </form>
+{% endblock %}

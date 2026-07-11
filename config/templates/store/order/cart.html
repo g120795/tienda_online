@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}carrito{% endblock %}
+{% block content %}
+    <div>
+    <ul>
+        <div class="content-gray-200 p-2 rounded shadow order order-gray-900 hover:bg-gray-200 text-red-300">    
+        {% for ord in orderitem %}
+            <li class="content-gray-200 p-2 rounded shadow order order-gray-900 hover:bg-gray-200 font-bold">
+                Nombre: {{ord.name_product}}<br>
+                Cantidad: {{ord.quantity}}<br>
+                Precio und: {{ord.price_unit}}<br>
+                Subtotal: {{ord.subtotal}}
+            <li><br>
+        {% endfor %}
+            
+        </div>
+    </ul>
+    {% if orderitem %}
+        <p class="ml-20 mt-4"> {{total}}.S/</p>              <a href="{% url 'pay_method' %}" class="ml-20 mt-4"><button>Continuar</button></a>
+    {% else %}
+        <p>{{order}}</p>
+
+    {% endif %}
+    </div>
+
+{% endblock %}
