@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Lista de pedidos{% endblock %}
+
+{% block content %}
+    <h1 class="p-4">Lista de pedidos</h1>
+        <ul>
+             <div class="bg-white p-4 rounded shadow border border-shadow-900">
+                {% for pedido in order %}
+                    <li class="list-group-item">id: {{pedido.id}}</li>
+                    <li class="list-group-item">costo total: {{pedido.order_total}}</li>
+                    <li class="list-group-item">usuario: {{pedido.profile}}</li>
+                    <li class="list-group-item">fecha de creacion: {{pedido.created_at}}</li>
+                    <li class="list-group-item">Estado: {{pedido.status}}</li>
+                    <li class="list-group-item mb-5">metodo de pago: {{pedido.payment_method}}</li>
+                {% endfor %}
+            </div>
+        </ul>
+    
+{% endblock %}

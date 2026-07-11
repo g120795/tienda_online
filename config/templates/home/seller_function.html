@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block title %}Vendedor{% endblock %}
+
+{% block content %}
+    <h1 class="p-4">Funciones del administrador</h1>
+        <ol>    
+            <li><a href="{% url 'create_product' %}"> <button>Crear producto</button></a></li>
+            <li><a href="{% url 'create_category' %}"> <button>Crear categoria</button></a></li>
+            <li><a href="{% url 'create_order' %}"> <button>Crear orden</button></a></li>
+            <li><a href="{% url 'catalog'  %}"> <button>Catalogo</button></a></li>
+            <li><a href="{% url 'list_order'  %}"> <button>Lista de pedidos</button></a></li>
+            <li><a href="{% url 'seller_catalog'  %}"> <button>Lista de productos</button></a></li>
+            
+        <ol>
+{% endblock %}

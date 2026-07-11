@@ -3,7 +3,7 @@
 
 {% block content %}
     <h1 class="p-4">Home Page</h1>
-    
+     <a href="{% url 'seller_function' %}"><button>funciones vendedor</button></a>
     <form method="POST" action="{% url 'logout' %}">
         {% csrf_token %}
             <button type="submit" class="ml-4">

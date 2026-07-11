@@ -8,9 +8,15 @@
                 {% for product in productos %}
                     <li class="list-group-item">Nombre: {{product.product_name}}</li>
                     <li>Model: {{product.product_model}}</li>
-                    <li>
-                        <a href="{% url 'detail_product' product.id %}">
+                    <li class="mb-5">
+                        <a href="{% url 'seller_detail_product' product.id %}">
                             Detalles
+                        </a>
+                        <a href="{% url 'update_product' product.id %}">
+                            Actualizar
+                        </a>
+                        <a href="{% url 'delete_product' product.id %}">
+                            Eliminar
                         </a>
                     </li>
                 {% endfor %}

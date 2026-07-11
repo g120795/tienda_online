@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from ..models.models_product import Product
 from ..models.models_order_item import OrderItem
 from ..models.models_order import Order
@@ -176,5 +176,26 @@ def payment(request):
         'order_item':order_item
      }
     return render(request, 'payment.html',context)
+
+def list_order(request):
+    order = Order.objects.all()
+    context = {
+
+        'order':order
+    }
+    return render(request, 'list_order.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

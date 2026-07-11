@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Detalles del Producto{% endblock %}
+
+{% block content %}
+    <h1>Detalles de {{producto.product_name}}</h1>
+    <ul class="list-group bg-white p-4 rounded shadow border border-shadow-900">
+        <div class="block bg-white p-4 rounded shadow border border-shadow-900 hover:bg-gray-200">
+            <li class="list-group-item">Id: {{producto.id}}</li>   
+            <li class="list-group-item">Nombre: {{producto.product_name}}</li>   
+            <li class="list-group-item">Modelo: {{producto.product_model}}</li>   
+            <li class="list-group-item">precio unitario: {{producto.product_price}}</li>
+            <li class="list-group-item">stock actual: {{producto.product_current_stock}}</li>
+            <li class="list-group-item">stock minimo: {{producto.product_min_stock}}</li>   
+            <li class="list-group-item mb-5">Categoria: {{producto.category}}</li>   
+        </div>
+    </ul>
+{% endblock %}

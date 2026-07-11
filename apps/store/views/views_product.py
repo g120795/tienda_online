@@ -36,6 +36,40 @@ def update_product(request, product_id):
     }
     return render(request, 'update_product.html',context)
 
+@login_required
+def seller_catalog(request):
+    if not request.user.is_staff:
+        return redirect('home')
+    
+    productos = Product.objects.all()
+    context = {
+        'productos': productos
+    }
+    return render(request, 'seller_catalog.html', context)
+
+@login_required
+def seller_detail_product(request, product_id):
+    if not request.user.is_staff:
+        return redirect('home')
+    
+    producto = Product.objects.get(id=product_id)
+    context = {
+        'producto': producto,
+    }
+    print(context)
+
+    return render(request, 'seller_detail_product.html', context)
+
+def delete_product(request,product_id):
+    producto = get_object_or_404(Product, id=product_id)
+    if request.method == 'POST':
+        producto.delete()
+        return redirect('seller_catalog')
+    context = {
+        'producto':producto
+    }
+    return render(request, 'delete_product.html',context)
+
 
 @login_required
 def catalog(request):

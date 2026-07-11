@@ -8,5 +8,7 @@ from .views_order import pay_method
 from .views_order import payment
 from .views_product import update_stock
 from .views_product import update_product
-
-
+from .views_order import list_order
+from .views_product import seller_catalog
+from .views_product import seller_detail_product
+from .views_product import delete_product

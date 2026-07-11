@@ -24,6 +24,6 @@ def order(request):
 def catalog_link(request):
     return render(request, 'catalog_link.html')
 
-
-
+def seller_function(request):
+    return render(request, 'seller_function.html')
 
