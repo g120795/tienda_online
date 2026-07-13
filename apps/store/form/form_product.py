@@ -10,6 +10,7 @@ class ProductForm(forms.ModelForm):
                  'product_price', 
                  'product_current_stock', 
                  'product_min_stock',
-                 'category'
+                 'is_active',
+                 'category',
                  
                  ]

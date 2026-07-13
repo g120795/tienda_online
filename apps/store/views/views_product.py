@@ -5,12 +5,18 @@ from ..models.models_product import Product
 
 @login_required
 def create_product(request):
+    stock = request.POST.get('product_current_stock')
+    print(stock)
+    #return redirect('create_product')
     if not request.user.is_staff:
         return redirect('home')
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
-            form.save()
+            producto = form.save(commit=False)
+            if producto.product_current_stock >=1:
+                producto.is_active = True
+            producto.save()
             return redirect('catalog')
     else:
         form = ProductForm()
@@ -81,7 +87,6 @@ def catalog(request):
 
 @login_required
 def detail_product(request, product_id):
-    print(request)
     stock_disponible = 0
     producto = Product.objects.get(id=product_id)
     stock_disponible = f'{producto.product_current_stock - producto.product_min_stock:.0f}'
@@ -91,25 +96,10 @@ def detail_product(request, product_id):
         'stock_disponible': stock_disponible,
         'form': form,
     }
-    print(context)
-
     return render(request, 'detail_product.html', context)
 
-def update_stock(request,order_item):
-    for i in order_item:
-        print(i.product_id)
+def update_stock(order_item):
     for update in order_item:
         product = Product.objects.get(id=update.product_id)
-        print(product)
-        form = ProductForm({'product_name':product.product_name,
-                            'product_model':product.product_model,
-                            'product_price':product.product_price,
-                            'product_current_stock':product.product_current_stock-update.quantity,
-                            'product_min_stock':product.product_min_stock,
-                            'category':product.category},instance=product)
-        print(form.errors)
-        if form.is_valid():
-            form.save()
-            return redirect('cart')
-        else:
-            return redirect('payment')
+        product.product_current_stock -= update.quantity
+        product.save()

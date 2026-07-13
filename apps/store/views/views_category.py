@@ -13,7 +13,7 @@ def create_category(request):
             form.save()
             return redirect('catalog_link')
     else:
-        form = CategoryForm
+        form = CategoryForm()
     context = {
 
         'form':form

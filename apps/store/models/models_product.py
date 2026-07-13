@@ -8,6 +8,7 @@ class Product(models.Model):
     product_price = models.PositiveIntegerField()
     product_current_stock = models.PositiveIntegerField()
     product_min_stock = models.PositiveIntegerField()
+    is_active = models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     
     
