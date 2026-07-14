@@ -5,9 +5,6 @@ from ..models.models_product import Product
 
 @login_required
 def create_product(request):
-    stock = request.POST.get('product_current_stock')
-    print(stock)
-    #return redirect('create_product')
     if not request.user.is_staff:
         return redirect('home')
     if request.method == 'POST':
@@ -28,7 +25,6 @@ def create_product(request):
 def update_product(request, product_id):
     if not request.user.is_staff:
         return redirect('home')
-    
     producto = get_object_or_404(Product,id=product_id)
     if request.method == 'POST':
         form = ProductForm(request.POST,instance=producto)
@@ -62,7 +58,6 @@ def seller_detail_product(request, product_id):
     context = {
         'producto': producto,
     }
-    print(context)
 
     return render(request, 'seller_detail_product.html', context)
 
@@ -79,7 +74,7 @@ def delete_product(request,product_id):
 
 @login_required
 def catalog(request):
-    productos = Product.objects.all()
+    productos = Product.objects.filter(is_active=True)
     context = {
         'productos': productos
     }
@@ -88,7 +83,7 @@ def catalog(request):
 @login_required
 def detail_product(request, product_id):
     stock_disponible = 0
-    producto = Product.objects.get(id=product_id)
+    producto = Product.objects.get(id=product_id, is_active=True)
     stock_disponible = f'{producto.product_current_stock - producto.product_min_stock:.0f}'
     form = OrderItemForm({'quantity': 1})
     context = {
@@ -102,4 +97,6 @@ def update_stock(order_item):
     for update in order_item:
         product = Product.objects.get(id=update.product_id)
         product.product_current_stock -= update.quantity
+        if product.product_current_stock == 0:
+            product.is_active=False
         product.save()

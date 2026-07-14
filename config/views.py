@@ -15,8 +15,8 @@ def contact(request):
 def product(request):
     return render(request, 'product.html')
 
-def category(request):
-    return render(request, 'category.html')
+def staff_link(request):
+    return render(request, 'staff_link.html')
 
 def order(request):
     return render(request, 'order.html')

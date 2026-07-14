@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}staff{% endblock %}
+
+{% block content %}
+    <form method="POST">    
+        {% csrf_token %}
+        <p class="p-4">{{form.is_staff}} staff</p>
+        <button class="blog bg-gray p-2 rounded shadow border border-gray-900 hover:bg-gray-200 hover:text-font-bold">Guardar cambios</button>
+    </form>    
+
+{% endblock %}

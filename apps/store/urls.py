@@ -23,6 +23,7 @@ urlpatterns = [
     path('<int:product_id>/detail_product/', detail_product, name='detail_product'),
     path('<int:product_id>/update_product/', update_product, name='update_product'),
     path('<int:product_id>/delete_product/', delete_product, name='delete_product'),
+    
     #category
     path('create_category/', create_category, name='create_category'),
 

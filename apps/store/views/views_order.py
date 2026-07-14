@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from ..models.models_product import Product
 from ..models.models_order_item import OrderItem
 from ..models.models_order import Order
@@ -105,7 +105,7 @@ def cart(request):
     order = Order.objects.filter(profile_id__user_id=request.user.id,status='CART').first()
     if not order:
         return render(request, 'cart.html',{'order':'carrito vacio'})    
-    orderitem = OrderItem.objects.filter(order_id=order.id)
+    orderitem = OrderItem.objects.filter(order_id=order.id, product__is_active=True)
     total = 0 
     for i in orderitem:
         if i.subtotal:
@@ -139,7 +139,7 @@ def pay_method(request):
 @login_required
 def payment(request):
     order = Order.objects.filter(profile_id__user_id=request.user.id, status='CART').first()
-    order_item =OrderItem.objects.filter(order_id=order.id)
+    order_item =OrderItem.objects.filter(order_id=order.id, product__is_active=True)
     total = 0
     for subtotal in order_item:
         if subtotal.subtotal:
@@ -170,6 +170,7 @@ def list_order(request):
         'order':order
     }
     return render(request, 'list_order.html', context)
+
 
 
 
