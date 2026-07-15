@@ -13,6 +13,7 @@ from .views import list_order
 from .views import seller_catalog
 from .views import seller_detail_product
 from .views import delete_product
+from .views import mi_orders
 
 urlpatterns = [
     #product
@@ -33,6 +34,7 @@ urlpatterns = [
     path('cart/', cart, name='cart'),
     path('pay_method', pay_method, name='pay_method' ),
     path('payment/', payment, name='payment'),
-    path('list_order/', list_order, name='list_order')
+    path('list_order/', list_order, name='list_order'),
+    path('mi_orders/', mi_orders, name='mi_orders')
 
 ]
