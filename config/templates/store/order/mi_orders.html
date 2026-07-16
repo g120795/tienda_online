@@ -2,10 +2,11 @@
 {% block title %}mis compras{% endblock %}
 {% block content %}
     <ul class="bg-gray p-4 rounded shadow border border-gray-900 hover:gray-200">
-        {% for lista in lista_item %}
+        {% for order in orders %}
             <div class="blog bg-gray p-4 mb-3 rounded shadow border border-gray-900 hover:gray-200">
-                {% for i in lista %}
-                <li><p>{{i.order.profile}}   {{i.name_product}}   {{i.subtotal}}   {{i.product.category}}</p></li>
+                <p>{{order.id}}  {{order.status}}</p>
+                {% for i in order.orderitem_set.all %}
+                <li><p>{{i.profile}}   {{i.name_product}}   {{i.subtotal}}   {{i.product.category}}</p></li>
                 {% endfor %}
             </div>
         {% endfor %}

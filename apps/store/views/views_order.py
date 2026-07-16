@@ -177,24 +177,22 @@ def list_order(request):
 
 
 def mi_orders(request):
-    lista_item = []
-    order_id = []
-    order_item = OrderItem.objects.filter(order__profile__user_id=request.user.id)
-    for i in order_item:
-        order_id.append(i.order_id)
-    order_id=list(set(order_id))
-
-    for i in range(0,len(order_id)):
-        lista = []
-        for j in order_item:  
-            if order_id[i] == j.order_id:  
-                lista.append(j)
-        lista_item.append(lista)
-
+    #lista_item = []
+    #order_id = []
+    #order_item = OrderItem.objects.filter(order__profile__user_id=request.user.id)
+    #for i in order_item:
+    #    order_id.append(i.order_id)
+    #order_id=list(set(order_id))
+#
+    #for i in range(0,len(order_id)):
+    #    lista = []
+    #    for j in order_item:  
+    #        if order_id[i] == j.order_id:  
+    #            lista.append(j)
+    #    lista_item.append(lista)
+    orders = Order.objects.filter(profile__user_id=request.user.id).prefetch_related('orderitem_set')
     context = {
-
-        
-        'lista_item':lista_item,
+        'orders':orders,
     }
     return render(request, 'mi_orders.html', context)
 
